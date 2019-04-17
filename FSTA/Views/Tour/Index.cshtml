@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "Tour Packages";
+
+}
+
+
+<div class="row">
+    <div class=" col-md-offset-2 col-md-8">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Destination</th>
+                    <th>Departure Date</th>
+                    <th>Departure Time</th>
+                    <th>No Of Passengers</th>
+                    <th>Tour Length (Days)</th>
+                    <th>Tour Leader</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in (List<FSTA.Models.Tour>)ViewData["TourList"])
+                {
+                    <tr>
+                        <td>
+                            @t.destination
+                        </td>
+                        <td>
+                            @t.departureDate.Date.ToString("d/M/yyyy")
+                        </td>
+                        <td>
+                            @(t.departureDate.Hour + ":" + t.departureDate.Minute.ToString("D2"))
+                        </td>
+                        <td>
+                            @t.numOfPassengers
+                        </td>
+                        <td>
+                            @t.numOfDays
+                        </td>
+                        <td>
+                            @{
+                                if (t.tourLeader != null)
+                                {
+                                    @t.tourLeader.name
+                                }
+                                else
+                                {
+                                    @:Not Assigned.
+                                }
+                            }
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+    
+
+    
+</div>

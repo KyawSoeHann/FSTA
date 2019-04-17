@@ -1,0 +1,47 @@
+﻿@using FSTA.Models;
+@{
+    ViewBag.Title = "Tour Packages";
+
+}
+
+
+<div class="row">
+    <div class="form-group">
+
+        <div class="col-md-2">
+            <input class="form-control" type="number" min="0" id="days" placeholder="No of Days" />
+        </div>
+
+        <div class="col-md-3">
+            <select class="form-control" id="leaders">
+                @foreach (var l in (List<Leader>)ViewData["LeaderList"])
+                {
+                    <option value="@l.id">@l.name</option>
+                }
+
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <button class="btn btn-default" id="calculate">Calculate</button>
+        </div>
+    </div>
+</div>
+<br/>
+
+Cost : $<span id="cost">0</span>
+<script>
+    $(document).ready(function () {
+        var cost = $("#cost").get()[0];
+
+        $("#calculate").click(function () {
+            var noOfDays = $("#days").val();
+            var leaderId = $("#leaders").children("option:selected").val();
+            $.get(`/cost/cost?leaderId=${leaderId}&noOfDays=${noOfDays}`, function (data) {
+                cost.innerHTML = data;
+            });
+
+        });
+    });
+
+</script>
