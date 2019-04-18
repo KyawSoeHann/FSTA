@@ -72,7 +72,10 @@ namespace FSTA.DAO
                         {
                             id = (int)sdr["id"],
                             name = (string)sdr["name"],
-                            dailyRate = (int)sdr["dailyRate"]
+                            contactNumber = (string)sdr["contactNumber"],
+                            email = (string)sdr["email"],
+                            dailyRate = (int)sdr["dailyRate"],
+                            destinationOpted = (string)sdr["destinationOpted"]
                         };
 
                     }
@@ -83,7 +86,10 @@ namespace FSTA.DAO
                         {
                             id = (int)sdr["id"],
                             name = (string)sdr["name"],
+                            contactNumber = (string)sdr["contactNumber"],
+                            email = (string)sdr["email"],
                             staffRank = (string)sdr["staffRank"]
+
                         };
                     }
                 }

@@ -16,5 +16,12 @@ namespace FSTA.Models
         {
             return dailyRate * numberOfDays;
         }
+        public override bool checkDestination(string destination)
+        {
+            if (destination == destinationOpted)
+            return true;
+            else
+            return false;
+        }
     }
 }

@@ -15,6 +15,9 @@ namespace FSTA.Models
         public virtual int getTotalRate(int numberOfDays) {
             return 0;
         }
-
+        public virtual bool checkDestination(string destination)
+        {
+            return true;
+        }
     }
 }

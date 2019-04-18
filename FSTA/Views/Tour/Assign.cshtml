@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "Assigning Tour Leader";
+}
+
+<div class="row">
+    <div class="form-group">
+        <div class="col-md-3">
+            <select class="form-control" id="tour">
+                @foreach (var t in (List<FSTA.Models.Tour>)ViewData["TourList"])
+                {
+                    <option value="@t.tourRef">@t.destination</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select class="form-control" id="leaders">
+                @foreach (var l in (List<FSTA.Models.Leader>)ViewData["LeaderList"])
+                {
+                    <option value="@l.id">@l.name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-default" id="assign">Assign</button>
+        </div>
+    </div>
+</div>
+<br />
+
+<span id="msgout">...</span>
+<script>
+    $(document).ready(function () {
+
+        $("#assign").click(function () {
+            var tourRef = $("#tour").children("option:selected").val();
+            var leaderId = $("#leaders").children("option:selected").val();
+            $.get(`/tour/assignleader?leaderId=${leaderId}&tourRef=${tourRef}`, function (msg) {
+                msgout.innerHTML = msg;
+            });
+
+        });
+    });
+
+</script>
