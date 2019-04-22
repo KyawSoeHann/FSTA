@@ -15,7 +15,7 @@ namespace FSTA.DAO
         {
             List<Tour> tLists = new List<Tour>();
             string query = @"SELECT t.tourRef,t.numDays,t.destination,departureDate,t.numPassengers,l.name,l.id as leaderId FROM Tour t LEFT JOIN Leader l on t.tourLeaderId = l.id";
-            using (SqlConnection connection = new SqlConnection(Database.conString)){
+            using (SqlConnection connection = new SqlConnection(Database.conString)) {
                 connection.Open();
                 SqlCommand cmd = new SqlCommand(query, connection);
                 SqlDataReader sdr = cmd.ExecuteReader();
@@ -42,7 +42,7 @@ namespace FSTA.DAO
 
                         t.tourLeader = l;
                     }
-                    
+
 
                     tLists.Add(t);
                 }
@@ -56,7 +56,7 @@ namespace FSTA.DAO
         public static Tour getTourById(int tourRef)
         {
             Tour t = new Tour();
-            string query = @"SELECT t.tourRef,t.numDays,t.destination,departureDate,t.numPassengers,l.name,l.id as leaderId FROM Tour t LEFT JOIN Leader l on t.tourLeaderId = l.id where t.tourRef ="+tourRef;
+            string query = @"SELECT t.tourRef,t.numDays,t.destination,departureDate,t.numPassengers,l.name,l.id as leaderId FROM Tour t LEFT JOIN Leader l on t.tourLeaderId = l.id where t.tourRef =" + tourRef;
 
             using (SqlConnection connection = new SqlConnection(Database.conString))
             {
@@ -92,27 +92,44 @@ namespace FSTA.DAO
                     }
                 }
             }
-
             return t;
         }
         public static void UpdateLeader(int leaderId, int tourRef)
         {
-            string query = @"UPDATE TOUR SET tourLeaderId = @leaderId WHERE tourRef = @tourRef";
-            SqlParameter param = new SqlParameter();
-            param.ParameterName = "@leaderId";
-            param.Value = leaderId;
-            SqlParameter param2 = new SqlParameter();
-            param2.ParameterName = "@tourRef";
-            param2.Value = tourRef;
+            string query = @"UPDATE TOUR SET tourLeaderId = " + leaderId + " WHERE tourRef =" + tourRef;
             using (SqlConnection connection = new SqlConnection(Database.conString))
             {
                 connection.Open();
                 SqlCommand cmd = new SqlCommand(query, connection);
-                cmd.Parameters.Add(param);
-                cmd.Parameters.Add(param2);
                 cmd.ExecuteNonQuery();
             }
         }
+        public static List<Tour> getToursByLeaderId(int leaderId)
+        {
+            List<Tour> assignments = new List<Tour>();
+            string query = @"SELECT t.numDays,departureDate FROM Tour t LEFT JOIN Leader l on t.tourLeaderId = l.id where t.tourLeaderId = @leaderId";
+            using (SqlConnection connection = new SqlConnection(Database.conString))
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand(query, connection);
+                SqlParameter param = new SqlParameter();
+                param.ParameterName = "@leaderId";
+                param.Value = leaderId;
+                cmd.Parameters.Add(param);
+                SqlDataReader sdr = cmd.ExecuteReader();
 
+                while (sdr.Read())
+                {
+                    Tour task = new Tour()
+                    {
+                        numOfDays = (int)sdr["numDays"],
+                        departureDate = sdr.GetDateTime(1)
+                    };
+                    assignments.Add(task);
+                }
+            }
+            return assignments;
+        }
     }
 }
+

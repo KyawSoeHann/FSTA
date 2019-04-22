@@ -33,14 +33,51 @@ namespace FSTA.Controllers
             string msg = "";
             Leader l = LeaderDao.getLeaderById(leaderId);
             Tour t = TourDao.getTourById(tourRef);
-            if (l.checkDestination(t.destination))
+
+            bool available = true;
+            List<Tour> assignments = TourDao.getToursByLeaderId(leaderId);
+            foreach(Tour task in assignments)
             {
-                TourDao.UpdateLeader(leaderId, tourRef);
-                msg = "Successfully assigned.";
+                if (t.departureDate < task.departureDate)
+                {
+                    if ((task.departureDate - t.departureDate).TotalDays > t.numOfDays)
+                    {
+                        available = true;
+                    }
+                    else
+                    {
+                        available = false;
+                        break;
+                    }
+                }
+                if (t.departureDate >= task.departureDate)
+                {
+                    if ((t.departureDate - task.departureDate).TotalDays > task.numOfDays)
+                    {
+                        available = true;
+                    }
+                    else
+                    {
+                        available = false;
+                        break;
+                    }
+                }
+            }
+            if (available)
+            {
+                if (l.checkDestination(t.destination))
+                {
+                    TourDao.UpdateLeader(leaderId, tourRef);
+                    msg = "Successfully assigned.";
+                }
+                else
+                {
+                    msg = "Destination does not match Tour Leader's preference.";
+                }
             }
             else
             {
-                msg = "Tour Leader could not be assigned.";
+                msg = "Tour Leader already has conflicting assignments.";
             }
             return Json(msg, JsonRequestBehavior.AllowGet);
         }
