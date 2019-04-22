@@ -13,7 +13,7 @@ namespace FSTA.Models
         public int leaveEntitled { get; set; }
         public string staffRank { get; set; }
 
-        public override int getTotalRate(int numberOfDays)
+        public override int getRate()
         {
             int rate = 0;
             switch (staffRank)
@@ -28,7 +28,7 @@ namespace FSTA.Models
                     break;
             }
 
-            return rate * numberOfDays;
+            return rate;
         }
     }
 }

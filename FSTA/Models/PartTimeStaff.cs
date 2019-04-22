@@ -12,9 +12,9 @@ namespace FSTA.Models
         public int dailyRate { get; set; }
         public string destinationOpted { get; set; }
 
-        public override int getTotalRate(int numberOfDays)
+        public override int getRate()
         {
-            return dailyRate * numberOfDays;
+            return dailyRate;
         }
         public override bool checkDestination(string destination)
         {

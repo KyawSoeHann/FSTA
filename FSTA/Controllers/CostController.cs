@@ -20,7 +20,8 @@ namespace FSTA.Controllers
         public ActionResult Cost(int leaderId,int noOfDays)
         {
             Leader l = LeaderDao.getLeaderById(leaderId);
-            int cost = l.getTotalRate(noOfDays);
+            int cost = l.getRate() * noOfDays;
+
             return Json(cost, JsonRequestBehavior.AllowGet);
         }
     }

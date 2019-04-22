@@ -12,7 +12,7 @@ namespace FSTA.Models
         public string contactNumber { get; set; }
         public string email { get; set; }
 
-        public virtual int getTotalRate(int numberOfDays) {
+        public virtual int getRate() {
             return 0;
         }
         public virtual bool checkDestination(string destination)
